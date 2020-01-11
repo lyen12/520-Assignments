@@ -45,6 +45,4 @@ Fraction reduce ( Fraction a ) {
     if ( a.num == 0 || a.den == 0 ) return a;
     int greatest_common_denominator = GCD ( a.num, a.den );
     return (Fraction) {a.num / greatest_common_denominator, a.den / greatest_common_denominator};
-    
-
 }
