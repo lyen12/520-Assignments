@@ -11,11 +11,15 @@ namespace {
         EXPECT_EQ(multiply(a,b).num,8);
         EXPECT_EQ(multiply(a,b).den,15);
 
-        /*Fraction a = (Fraction) { 21, 33 };
-        EXPECT_EQ(reduce(a).num,7);
-        EXPECT_EQ(reduce(a).den,11);*/
+        Fraction c = (Fraction) { -21, 33 };
+        EXPECT_EQ(reduce(c).num,7);
+        EXPECT_EQ(reduce(c).den,11);
 
-        printanswer(add(a,b));
+        int x;
+        x = GCD ( a.num, a.den );
+        printf("GCD is %d\n", x);
+
+        printanswer( reduce (a ) );
 
     }
 

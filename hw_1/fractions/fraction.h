@@ -27,6 +27,15 @@ Fraction add ( Fraction a, Fraction b );
 Fraction multiply ( Fraction a, Fraction b );
 
 /*! Prints the resulting Fraction*/
-void printanswer(Fraction);
+void printanswer ( Fraction );
+
+/*! Find the lowest common demoninator 
+*   \param a The first number
+*   \param b the second number
+*/
+int GCD ( int a, int b );
+
+/*! Reduce fractions with the greatest common demoninator*/
+Fraction reduce ( Fraction );
 
 #endif
