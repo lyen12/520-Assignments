@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "fraction.h"
 
 Fraction add ( Fraction a, Fraction b ) {
@@ -17,6 +18,8 @@ void printanswer ( Fraction answer ) {
 /*GCD Function to determin the greatest common denominator*/
 int GCD ( int a, int b ) {
   int divisor, dividend;
+  a = abs(a);
+  b = abs(b);
   if ( a < b ) {
       divisor = a;
       dividend = b; 
@@ -39,6 +42,9 @@ int GCD ( int a, int b ) {
 }
 
 Fraction reduce ( Fraction a ) {
+    if ( a.num == 0 || a.den == 0 ) return a;
     int greatest_common_denominator = GCD ( a.num, a.den );
     return (Fraction) {a.num / greatest_common_denominator, a.den / greatest_common_denominator};
+    
+
 }

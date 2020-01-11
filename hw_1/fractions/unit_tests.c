@@ -12,7 +12,7 @@ namespace {
         EXPECT_EQ(multiply(a,b).den,15);
 
         Fraction c = (Fraction) { -21, 33 };
-        EXPECT_EQ(reduce(c).num,7);
+        EXPECT_EQ(reduce(c).num,-7);
         EXPECT_EQ(reduce(c).den,11);
 
         int x;
