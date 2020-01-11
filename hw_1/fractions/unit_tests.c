@@ -10,6 +10,13 @@ namespace {
         EXPECT_EQ(add(a,b).den,15);
         EXPECT_EQ(multiply(a,b).num,8);
         EXPECT_EQ(multiply(a,b).den,15);
+
+        /*Fraction a = (Fraction) { 21, 33 };
+        EXPECT_EQ(reduce(a).num,7);
+        EXPECT_EQ(reduce(a).den,11);*/
+
+        printanswer(add(a,b));
+
     }
 
 }

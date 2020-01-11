@@ -26,4 +26,7 @@ Fraction add ( Fraction a, Fraction b );
  */
 Fraction multiply ( Fraction a, Fraction b );
 
+/*! Prints the resulting Fraction*/
+void printanswer(Fraction);
+
 #endif
