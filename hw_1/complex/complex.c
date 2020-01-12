@@ -7,7 +7,7 @@ Complex add ( Complex a, Complex b ) {
 }
 
 Complex negate ( Complex a ) {
-    return (Complex) { -1*a.real, -1*a.im};
+    return (Complex) { -a.real, -a.im};
 }
 
 Complex multiply ( Complex a, Complex b ) {
@@ -15,6 +15,5 @@ Complex multiply ( Complex a, Complex b ) {
 }
 
 double magnitude ( Complex a ) {
-    double z_mag = sqrt( pow(a.real, 2) + pow(a.im, 2) );
-    return z_mag;
+    return sqrt( pow(a.real, 2) + pow(a.im, 2) );
 }
