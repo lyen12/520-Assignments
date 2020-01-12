@@ -39,6 +39,9 @@ Complex multiply ( Complex a, Complex b );
 double magnitude ( Complex a );
 
 /*! Prints the resulting answer*/
-void printanswer ( Complex a );
+void printcomplexanswer ( Complex a );
+
+/*! Prints the resulting answer*/
+void printanswer ( double a );
 
 #endif
