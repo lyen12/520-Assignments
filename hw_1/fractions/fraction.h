@@ -29,7 +29,7 @@ Fraction multiply ( Fraction a, Fraction b );
 /*! Prints the resulting Fraction*/
 void printanswer ( Fraction );
 
-/*! Find the lowest common demoninator 
+/*! Find the greatest common demoninator 
 *   \param a The first number
 *   \param b the second number
 */
