@@ -39,17 +39,17 @@ int GCD ( int a, int b ) {
 
 //Reduce fraction to convert fraction to simplest form
 Fraction reduce ( Fraction a ) {
-    if ( a.num == 0 && a.den == 0 ) return a;
-    if (a. num == 0 && a.den != 0) return (Fraction) {0, 1};
-    if (a. num != 0 && a.den == 0) return (Fraction) {1, 0}; 
+    if ( a.num == 0 && a.den == 0 ) return a; // 0/0 is undefined, so returning 0/0
+    if ( a.num == 0 && a.den != 0 ) return (Fraction) {0, 1}; // 0/1 is considered the simplest form of 0/n
+    if ( a.num != 0 && a.den == 0 ) return (Fraction) {1, 0}; // 1/0 is considered the simplest for of n/0
 
     int numerator = a.num;
     int denominator = a.den;
-    if (a.den < 0 && a.num > 0) {
+    if ( a.den < 0 && a.num > 0 ) {
         numerator = -a.num;
         denominator = -a.den;
     }
-    if (a.num < 0 && a.den < 0) {
+    if ( a.num < 0 && a.den < 0 ) {
         numerator = abs(a.num);
         denominator = abs(a.den);
     }
