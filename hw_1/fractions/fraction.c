@@ -10,11 +10,6 @@ Fraction multiply ( Fraction a, Fraction b ) {
   return (Fraction) { a.num * b.num, a.den * b.den };
 }
 
-/*Print answer of Fraction for testing*/
-void printanswer ( Fraction answer ) {
-  printf("%d / %d \n", answer.num, answer.den);
-}
-
 /*GCD Function to determine the greatest common denominator*/
 /*This function uses the Euclidean Algorithm to determine the GCD*/
 int GCD ( int a, int b ) {
@@ -38,15 +33,27 @@ int GCD ( int a, int b ) {
       remainder = dividend % divisor;
       dividend = divisor;
       divisor = remainder;
-      
-      //printf("GCD is %d\n", greatest_common_denominator);
-  }
+      }
   return greatest_common_denominator;
 }
 
 //Reduce fraction to convert fraction to simplest form
 Fraction reduce ( Fraction a ) {
-    if ( a.num == 0 || a.den == 0 ) return a;
+    if ( a.num == 0 && a.den == 0 ) return a;
+    if (a. num == 0 && a.den != 0) return (Fraction) {0, 1};
+    if (a. num != 0 && a.den == 0) return (Fraction) {1, 0}; 
+
+    int numerator = a.num;
+    int denominator = a.den;
+    if (a.den < 0 && a.num > 0) {
+        numerator = -a.num;
+        denominator = -a.den;
+    }
+    if (a.num < 0 && a.den < 0) {
+        numerator = abs(a.num);
+        denominator = abs(a.den);
+    }
+
     int greatest_common_denominator = GCD ( a.num, a.den );
-    return (Fraction) {a.num / greatest_common_denominator, a.den / greatest_common_denominator};
+    return (Fraction) {numerator / greatest_common_denominator, denominator / greatest_common_denominator};
 }
