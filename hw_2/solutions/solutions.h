@@ -13,11 +13,11 @@ void reverse_in_place (int a[], int b);
 
 /*Reverse takes an array and its length and returns a new 
 array that is the reverse of the given array*/ 
-int reverse (int a);
+int *reverse (int a[], int b);
 
 /*Num_instances takes an array of integers, a length, and a value and 
 returns the number of instances of that value in the array*/
-int num_instances (int a);
+int num_instances (int a[], int b, int c);
 
 /*A point object at x, y, z coordinates*/
 typedef struct {
@@ -27,6 +27,6 @@ typedef struct {
 /*Map takes an array of Points, its length, and a function pointer that 
 returns a newly allocated array whose values are the values of the function 
 argument applied to the array argument.*/
-Point map( Point a);
+Point *map( Point a[], int length_of_array, Point (*fn_ptr)(Point));
 
 #endif
