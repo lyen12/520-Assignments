@@ -3,8 +3,6 @@
 #include <math.h>
 #include "solutions.h"
 
-#define INITIAL_STACK_SIZE 100
-
 static int total = 0;
 int running_total (int a) {
     return total += a; //total = total + a
@@ -53,6 +51,7 @@ int num_instances (int a[], int length_of_a, int value) {
     }
 }
 
+//Runs a function action on each Point in the array
 Point *map( Point a[], int length_of_a, Point (*fn_ptr)(Point)) {
     Point *solution = (Point *)malloc(length_of_a*sizeof(Point));
     for ( ; length_of_a > 0; length_of_a-- ) {

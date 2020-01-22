@@ -4,7 +4,6 @@
 namespace {
 
     TEST(HW2,RunningTotal) {
-        //Test for running_total
         ASSERT_EQ(running_total(1),  1);
         ASSERT_EQ(running_total(1),  2);
         ASSERT_EQ(running_total(5),  7);
@@ -17,7 +16,6 @@ namespace {
     }
 
     TEST(HW2,ReverseInPlace) {
-        //Test for reverse
         int x[] = {10, 20, 30, 40, 50};
         reverse_in_place (x,5);
         ASSERT_EQ(x[0],50);
@@ -52,7 +50,6 @@ namespace {
     Point negate(Point p) {
       return { -p.x, -p.y, -p.z };
     }
-
     TEST(HW2,PointMap) {
         Point a[] = { { 1,2,3 }, { 2,3,4 } };
         Point * b = map(a,2,negate);
