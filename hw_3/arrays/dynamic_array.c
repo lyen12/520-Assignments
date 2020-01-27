@@ -4,6 +4,7 @@
 #include <string.h>
 #include <assert.h>
 #include <math.h>
+#include <stdbool.h>
 
 /* private functions *********************************************************/
 
@@ -145,7 +146,8 @@ void DynamicArray_push_front(DynamicArray * da, double value) {
 
 double DynamicArray_pop(DynamicArray * da) {
     assert(DynamicArray_size(da) > 0);
-    double value = DynamicArray_get(da, DynamicArray_size(da)-1);
+    //double value = DynamicArray_get(da, DynamicArray_size(da)-1);
+    double value = DynamicArray_last( da );
     DynamicArray_set(da, DynamicArray_size(da)-1, 0.0);
     da->end--;
     return value;
@@ -153,14 +155,15 @@ double DynamicArray_pop(DynamicArray * da) {
 
 double DynamicArray_pop_front(DynamicArray * da) {
     assert(DynamicArray_size(da) > 0);
-    double value = DynamicArray_get(da, 0);
+    //double value = DynamicArray_get(da, 0);
+    double value = DynamicArray_first( da );
     da->origin++;
     return value;    
 }
 
 DynamicArray * DynamicArray_map(const DynamicArray * da, double (*f) (double)) {
     assert(da->buffer != NULL);
-    DynamicArray * result = DynamicArray_new();
+    DynamicArray * result = DynamicArray_copy(da);
     for ( int i=0; i<DynamicArray_size(da); i++ ) {
         DynamicArray_set(result, i, f(DynamicArray_get(da, i)));
     }
@@ -212,8 +215,8 @@ double DynamicArray_mean ( const DynamicArray * da ) {
 /*Function for qsort function to be used in DynamicArray_copy_and_sort function.
 Compares the doubles in the array*/
 int compar_doubles (const void * one, const void * two) {
-    const double * one_double = (const double *)one;
-    const double * two_double = (const double *)two;
+    const double * one_double = (const double *)one;    //Recasting one as a Double type
+    const double * two_double = (const double *)two;    //Recasting two as a Double type
     if (*one_double > *two_double) { return 1;}
     else if (*one_double < *two_double) { return -1;}
     return 0;
@@ -245,20 +248,25 @@ double *DynamicArray_copy_and_sort( const DynamicArray * da ) {
 
 double DynamicArray_median ( const DynamicArray * da ) {
     assert(da->buffer != NULL);
+    double mid_value_1, mid_value_2, median;
     double *sorted_array = DynamicArray_copy_and_sort( da );
     int sort_array_size = DynamicArray_size( da );
     /*Determine if # of elements is even or odd; if odd, median is middle value,
     if even, median is average of two middle values*/
     if ( sort_array_size % 2 == 0 ) { 
-        double mid_value_1 = sorted_array[sort_array_size/2];
-        double mid_value_2 = sorted_array[(sort_array_size/2)-1];
-        return (mid_value_1 + mid_value_2) / 2 ;
+        mid_value_1 = sorted_array[sort_array_size/2];
+        mid_value_2 = sorted_array[(sort_array_size/2)-1];
+        median = (mid_value_1+mid_value_2) / 2;
+        free( sorted_array );   //Free up space taken up by sorted_array since we no longer need it
+        return median;
     }
     else {
-        return sorted_array[sort_array_size/2];
+        median = sorted_array[sort_array_size/2];
+        free( sorted_array );
+        return median;
     }
-
 }
+
 double DynamicArray_sum ( const DynamicArray * da ) {
     double sum = 0;
     for ( int i = da->origin; i < da->end; i++) {
@@ -267,3 +275,83 @@ double DynamicArray_sum ( const DynamicArray * da ) {
     return sum;
 }
 
+/*EXERCISE 2************************************************/
+double DynamicArray_last ( const DynamicArray * da ) {
+    assert(da->buffer != NULL);
+    return da->buffer[ da, (da->end)-1 ];
+}
+
+double DynamicArray_first ( const DynamicArray * da ) {
+    assert(da->buffer != NULL);
+    return da->buffer[ da, da->origin ];
+}
+
+/*EXERCISE 3************************************************/
+DynamicArray * DynamicArray_copy ( const DynamicArray * da ) {
+    DynamicArray * da_new = (DynamicArray *) malloc(sizeof(DynamicArray));
+    da_new->capacity = da->capacity;
+    da_new->origin = da->origin;
+    da_new->end = da->end;
+    da_new->buffer = (double *) calloc ( da->capacity, sizeof(double) );
+    memcpy((da_new->buffer)+(da->origin), (da->buffer)+(da->origin), DynamicArray_size(da)*sizeof(double));
+    return da_new;
+}
+
+/*EXERCISE 4*************************************************/
+DynamicArray * DynamicArray_range ( double a, double b, double step) {
+    DynamicArray *da_r = DynamicArray_new();
+    int end_element = (b-a)/step;
+    for ( int i = 0; i <= end_element; i++ ) {
+        DynamicArray_set(da_r, i, a);
+        a = a + step;
+    }
+    return da_r;
+}
+
+/*EXERCISE 5************************************************/
+DynamicArray * DynamicArray_concat ( const DynamicArray * a, const DynamicArray * b ) {
+    DynamicArray *c = (DynamicArray *) malloc(sizeof(DynamicArray));
+    c->origin = a->origin;
+    c->end = a->end + DynamicArray_size(b);
+    c->capacity = (a->end) + ((b->capacity) - (b->origin));
+    c->buffer = (double *) calloc ( c->capacity, sizeof(double) );
+
+    memcpy((c->buffer)+(c->origin), (a->buffer)+(a->origin), DynamicArray_size(a)*sizeof(double));
+    memcpy((c->buffer)+(a->end), (b->buffer)+(b->origin), DynamicArray_size(b)*sizeof(double));
+    return c;
+}
+
+/*EXERCISE 6***********************************************/
+/*Function to take sub_array for the DynamicArray_take function*/   
+DynamicArray * DynamicArray_take_subarray ( DynamicArray * a, int n ) {
+    int array_size = DynamicArray_size( a );
+    if ( abs(n) > array_size ) { return DynamicArray_subarray( a, 0, array_size ); }
+    if ( n >= 0 ) {
+        return DynamicArray_subarray( a, 0, n );
+    } 
+    return DynamicArray_subarray( a, array_size + n, array_size);
+}
+/*Function to add zeros to rest of the array if requested n elements is greater than the array size*/   
+void DynamicArray_push_zeros ( DynamicArray * a, int num_of_zeros, bool push_to_front) {
+    for (int i = 0; i < num_of_zeros; i++ ) {
+        if ( push_to_front ) {
+            DynamicArray_push_front( a, 0.0 );
+        } else {
+            DynamicArray_push( a, 0.0 );
+        }
+    }
+}
+
+DynamicArray * DynamicArray_take ( const DynamicArray * a, int n ) {
+    assert(a->buffer != NULL);
+    DynamicArray *sub_a = (DynamicArray * )a;
+    int array_size = DynamicArray_size( a );
+    int num_of_zeros = abs(n) - array_size;
+    sub_a = DynamicArray_take_subarray( sub_a , n );
+    if ( num_of_zeros > 0 ) {
+        DynamicArray_push_zeros( sub_a, num_of_zeros, n > 0 );
+    }
+    return sub_a;
+} 
+            
+  

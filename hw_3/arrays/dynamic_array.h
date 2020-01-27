@@ -66,6 +66,12 @@ DynamicArray * DynamicArray_range ( double a, double b, double step);
  */
 DynamicArray * DynamicArray_concat ( const DynamicArray * a, const DynamicArray * b );
 
+/*! Return a sub-array of the array.
+ *  \param a The array
+ *	\param n The number of elements starting from beginning or end.
+ */
+DynamicArray * DynamicArray_take ( const DynamicArray * a , int n );
+
 /*! Mathematical operations
   */
 double DynamicArray_min ( const DynamicArray * da );

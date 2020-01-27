@@ -135,8 +135,8 @@ namespace {
         DynamicArray_set(t, 2, 7);
         DynamicArray_set(t, 3, 3);
         DynamicArray_set(t, 4, 9);
-
         DynamicArray_print_debug_info( t ); 
+
         double array_min = DynamicArray_min ( t );
         double array_max = DynamicArray_max ( t );
         double array_sum = DynamicArray_sum ( t );
@@ -153,5 +153,96 @@ namespace {
         printf("Mean of inputted array is %e\n", array_mean);
         printf("Median of inputted array is %e\n", array_median);
         DynamicArray_destroy(t);    
-    }         
+        free(t);
+    }        
+    /*TEST for EXERCISE 2*/
+    TEST(DynamicArray, First_and_Last) {
+        DynamicArray * t = DynamicArray_new();
+        double s = 1.0;
+        for ( int i = 0; i < 5; i++ ) {
+            DynamicArray_set(t, i, s);
+            s = s + 1.0;
+        }
+        DynamicArray_print_debug_info( t ); 
+        printf("First element is %e\n", DynamicArray_first(t));
+        printf("Last element is %e\n", DynamicArray_last(t));
+        DynamicArray_destroy(t);  
+        free(t);  
+    }
+    /*TEST for EXERCISE 3*/
+    TEST(DynamicArray, copy) {
+        DynamicArray * t = DynamicArray_new();
+        double s = 1.0;
+        for ( int i = 0; i < 5; i++ ) {
+            DynamicArray_set(t, i, s);
+            s = s + 1.0;
+        }
+        printf("Current array is:\n");
+        DynamicArray_print_debug_info( t ); 
+
+        DynamicArray * new_t = DynamicArray_copy(t);
+        printf("Copy of array is:\n");
+        DynamicArray_print_debug_info( new_t ); 
+        DynamicArray_destroy(t);
+        free(t);
+        DynamicArray_destroy(new_t);
+        free(new_t);
+    }
+
+    /*TEST for EXERCISE 4*/
+    TEST(DynamicArray, range) {
+        DynamicArray * t = DynamicArray_range(5, 6, 0.5);
+        DynamicArray_print_debug_info( t ); 
+        DynamicArray_destroy(t);
+        free(t);
+    }
+
+    /*TEST for EXERCISE 5*/
+    TEST(DynamicArray, concat) {
+        DynamicArray * a = DynamicArray_range(0, 1, 0.5);
+        DynamicArray * b = DynamicArray_range(1.0, 2, 0.5);
+        printf("Array a is----->\n");
+        DynamicArray_print_debug_info( a ); 
+        printf("Array b is----->\n");
+        DynamicArray_print_debug_info( b ); 
+
+        DynamicArray * c = DynamicArray_concat(a, b); 
+        printf("Array c is----->\n");
+        DynamicArray_print_debug_info( c ); 
+
+        DynamicArray_destroy(a);
+        free(a);
+        DynamicArray_destroy(b);
+        free(b);
+        DynamicArray_destroy(c);
+        free(c);
+    }
+
+    /*TEST for EXERCISE 6*/
+    TEST(DynamicArray, take) {
+        DynamicArray * a = DynamicArray_range(1, 5, 1);
+        printf("Array a is----->\n");
+        DynamicArray_print_debug_info( a );
+
+        DynamicArray * b = DynamicArray_take(a, 2);  /* yields [ 1, 2 ] */
+        printf("Array b is----->\n");
+        DynamicArray_print_debug_info( b );
+
+        DynamicArray * c = DynamicArray_take(a, -2); /* yields [ 4, 5 ] */
+        printf("Array c is----->\n");
+        DynamicArray_print_debug_info( c );
+
+        DynamicArray * d = DynamicArray_take(a, -7);  /* yields [ 1, 2, 3, 4, 5, 0, 0 ] */
+        printf("Array d is----->\n");
+        DynamicArray_print_debug_info( d );
+
+        DynamicArray_destroy(a);
+        free(a);
+        DynamicArray_destroy(b);
+        free(b);
+        DynamicArray_destroy(c);
+        free(c);
+        DynamicArray_destroy(d);
+        free(d);
+    }
 }
