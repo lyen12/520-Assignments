@@ -6,6 +6,30 @@
 #define X 1.2345
 
 namespace {
+    TEST(DynamicArray, count) {
+        DynamicArray * a = DynamicArray_range(0, 1, 0.1);
+        printf("Array a is----->\n");
+        DynamicArray_print_debug_info( a );
+
+        DynamicArray * b = DynamicArray_range(1.1, 2, 0.1);
+        printf("Array b is----->\n");
+        DynamicArray_print_debug_info( b );
+
+        DynamicArray * c = DynamicArray_concat(a, b);
+        printf("Array a and b concated is, c----->\n");
+        DynamicArray_print_debug_info( c );
+
+        printf("# of arrays are %d\n", DynamicArray_num_arrays() );
+
+        ASSERT_EQ(DynamicArray_is_valid(a), 1);
+        ASSERT_EQ(DynamicArray_num_arrays(), 3);
+        DynamicArray_destroy_all();
+        ASSERT_EQ(DynamicArray_is_valid(a), 0);
+        ASSERT_EQ(DynamicArray_num_arrays(), 0);
+        free(a);
+        free(b);
+        free(c);
+    }
 
     TEST(DynamicArray, CreateAndDestroy) {
         DynamicArray * a = DynamicArray_new();
@@ -126,10 +150,10 @@ namespace {
     TEST(DynamicArray, Math) {
         DynamicArray * t = DynamicArray_new();
         double s = 1.0;
-        /*for ( int i = 0; i < 5; i++ ) {
+        for ( int i = 0; i < 5; i++ ) {
             DynamicArray_set(t, i, s);
             s = s + 1.0;
-        }*/
+        }
         DynamicArray_set(t, 0, 4);
         DynamicArray_set(t, 1, 3);
         DynamicArray_set(t, 2, 7);
@@ -244,5 +268,29 @@ namespace {
         free(c);
         DynamicArray_destroy(d);
         free(d);
+        
     }
+    /*TEST for EXERCISE 7***************************************************/
+    /*Comment out other tests before running the TEST below to prevent DynamicArray_num_arrays 
+    from counting arrays created from previous tests.*/
+    // TEST(DynamicArray, trackanddestroy ) {
+    //     DynamicArray * a = DynamicArray_range(0, 1, 0.1);
+    //     DynamicArray * b = DynamicArray_range(1.1, 2, 0.1);
+    //     DynamicArray * c = DynamicArray_concat(a, b);
+    //     ASSERT_EQ(DynamicArray_is_valid(a), 1);
+
+    //     ASSERT_EQ(DynamicArray_num_arrays(), 3);
+    //     int number_of_arrays = DynamicArray_num_arrays();
+    //     int number_of_arrays_destroyed = DynamicArray_destroy_all();
+    //     printf("number of arrays is %d\n", number_of_arrays);
+    //     printf("number of arrays destroyed is %d\n", number_of_arrays_destroyed);
+
+    //     ASSERT_EQ(number_of_arrays, number_of_arrays_destroyed);
+    //     ASSERT_EQ(DynamicArray_is_valid(a), 0);
+    //     ASSERT_EQ(DynamicArray_num_arrays(), 0);
+    //     free(a);
+    //     free(b);
+    //     free(c);
+    // }
+
 }

@@ -6,6 +6,13 @@
 #include <math.h>
 #include <stdbool.h>
 
+/*Global variable for track arrays*/
+DynamicArray * first_array = NULL;
+DynamicArray * last_array = NULL;
+int number_of_arrays_allocated = 0;
+
+void DynamicArray_track ( DynamicArray * a );
+
 /* private functions *********************************************************/
 
 /* Position in the buffer of the array element at position index */
@@ -27,7 +34,6 @@ static int out_of_buffer ( DynamicArray * da, int offset ) {
    copies the old information into the new buffer, and deletes
    the old buffer */
 static void extend_buffer ( DynamicArray * da ) {
-
     double * temp = (double *) calloc ( 2 * da->capacity, sizeof(double) );
     int new_origin = da->capacity - (da->end - da->origin)/2,
            new_end = new_origin + (da->end - da->origin);
@@ -55,13 +61,8 @@ DynamicArray * DynamicArray_new(void) {
     da->buffer = (double *) calloc ( da->capacity, sizeof(double) ); 
     da->origin = da->capacity / 2;
     da->end = da->origin;
+    DynamicArray_track ( da );
     return da;
-}
-
-void DynamicArray_destroy(DynamicArray * da) {
-    free(da->buffer);
-    da->buffer = NULL;
-    return;
 }
 
 int DynamicArray_size(const DynamicArray * da) {
@@ -170,18 +171,15 @@ DynamicArray * DynamicArray_map(const DynamicArray * da, double (*f) (double)) {
     return result;
 }
 
-DynamicArray * DynamicArray_subarray(DynamicArray * da, int a, int b) {
-
-  assert(da->buffer != NULL);
-  assert(b >= a);
-
-  DynamicArray * result = DynamicArray_new();
-
-  for (int i=a; i<b; i++) {
-      DynamicArray_push(result,DynamicArray_get(da, i));
-  }
-  return result;
-}
+DynamicArray * DynamicArray_subarray( const DynamicArray * da, int a, int b) {
+    assert(da->buffer != NULL);
+    assert(b >= a);
+    DynamicArray * result = DynamicArray_new();
+    for (int i=a; i<b; i++) {
+        DynamicArray_push(result,DynamicArray_get(da, i));
+    }
+    return result;
+    }
 
 /*Exercise 1***************************************************************/
 double DynamicArray_min ( const DynamicArray * da ) {
@@ -245,7 +243,6 @@ double *DynamicArray_copy_and_sort( const DynamicArray * da ) {
 
     return sorted_array;
 }
-
 double DynamicArray_median ( const DynamicArray * da ) {
     assert(da->buffer != NULL);
     double mid_value_1, mid_value_2, median;
@@ -294,6 +291,7 @@ DynamicArray * DynamicArray_copy ( const DynamicArray * da ) {
     da_new->end = da->end;
     da_new->buffer = (double *) calloc ( da->capacity, sizeof(double) );
     memcpy((da_new->buffer)+(da->origin), (da->buffer)+(da->origin), DynamicArray_size(da)*sizeof(double));
+    DynamicArray_track( da_new );
     return da_new;
 }
 
@@ -318,12 +316,13 @@ DynamicArray * DynamicArray_concat ( const DynamicArray * a, const DynamicArray 
 
     memcpy((c->buffer)+(c->origin), (a->buffer)+(a->origin), DynamicArray_size(a)*sizeof(double));
     memcpy((c->buffer)+(a->end), (b->buffer)+(b->origin), DynamicArray_size(b)*sizeof(double));
+    DynamicArray_track( c );
     return c;
 }
 
 /*EXERCISE 6***********************************************/
 /*Function to take sub_array for the DynamicArray_take function*/   
-DynamicArray * DynamicArray_take_subarray ( DynamicArray * a, int n ) {
+DynamicArray * DynamicArray_take_subarray ( const DynamicArray * a, int n ) {
     int array_size = DynamicArray_size( a );
     if ( abs(n) > array_size ) { return DynamicArray_subarray( a, 0, array_size ); }
     if ( n >= 0 ) {
@@ -344,14 +343,63 @@ void DynamicArray_push_zeros ( DynamicArray * a, int num_of_zeros, bool push_to_
 
 DynamicArray * DynamicArray_take ( const DynamicArray * a, int n ) {
     assert(a->buffer != NULL);
-    DynamicArray *sub_a = (DynamicArray * )a;
     int array_size = DynamicArray_size( a );
     int num_of_zeros = abs(n) - array_size;
-    sub_a = DynamicArray_take_subarray( sub_a , n );
+    DynamicArray *sub_a = DynamicArray_take_subarray( a , n );
     if ( num_of_zeros > 0 ) {
         DynamicArray_push_zeros( sub_a, num_of_zeros, n > 0 );
     }
+    DynamicArray_track( sub_a );
     return sub_a;
 } 
-            
-  
+
+/*EXERCISE 7************************************************************/
+/*Function that points to the next array created*/
+void DynamicArray_track ( DynamicArray * a ) {
+    if ( first_array == NULL ) {    /*if only one array was inputted*/
+        first_array = a;
+        last_array = a;
+        number_of_arrays_allocated++;
+        return;
+    }
+    /*Point the DA->next array to the next array and move the last_array pointer to the last array*/
+    last_array->next_array = a;
+    last_array = a;
+    number_of_arrays_allocated++;
+}
+
+int DynamicArray_num_arrays() {
+    return number_of_arrays_allocated;
+}
+
+void DynamicArray_destroy(DynamicArray * da) {
+    if ( da->buffer == NULL ) { return; }
+    free(da->buffer);
+    da->buffer = NULL;
+    return;
+}
+int DynamicArray_destroy_all() {
+    int count_destroyed = 0;
+    if ( first_array == NULL ) { return 0; }
+    for ( DynamicArray *current_element = first_array; 
+        current_element != last_array; 
+        current_element = current_element->next_array ) {
+        DynamicArray_destroy( current_element );
+        count_destroyed++;   
+        number_of_arrays_allocated--;
+
+    }
+    DynamicArray_destroy( last_array );
+    count_destroyed++;
+    number_of_arrays_allocated--;
+    return count_destroyed;
+}
+
+int DynamicArray_is_valid(const DynamicArray * da) {
+    if ( da->buffer == NULL ) { return 0; }
+    return 1;
+    /*return da->buffer == NULL ? 0 : 1;*/
+}
+
+
+
