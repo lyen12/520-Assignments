@@ -275,12 +275,12 @@ double DynamicArray_sum ( const DynamicArray * da ) {
 /*EXERCISE 2************************************************/
 double DynamicArray_last ( const DynamicArray * da ) {
     assert(da->buffer != NULL);
-    return da->buffer[ da, (da->end)-1 ];
+    return da->buffer[ (da->end)-1 ];
 }
 
 double DynamicArray_first ( const DynamicArray * da ) {
     assert(da->buffer != NULL);
-    return da->buffer[ da, da->origin ];
+    return da->buffer[ da->origin ];
 }
 
 /*EXERCISE 3************************************************/
