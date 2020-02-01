@@ -308,15 +308,24 @@ DynamicArray * DynamicArray_range ( double a, double b, double step) {
 
 /*EXERCISE 5************************************************/
 DynamicArray * DynamicArray_concat ( const DynamicArray * a, const DynamicArray * b ) {
-    DynamicArray *c = (DynamicArray *) malloc(sizeof(DynamicArray));
-    c->origin = a->origin;
-    c->end = a->end + DynamicArray_size(b);
-    c->capacity = (a->end) + ((b->capacity) - (b->origin));
-    c->buffer = (double *) calloc ( c->capacity, sizeof(double) );
+    // DynamicArray *c = (DynamicArray *) malloc(sizeof(DynamicArray));
+    // c->origin = a->origin;
+    // c->end = a->end + DynamicArray_size(b);
+    // c->capacity = (a->end) + ((b->capacity) - (b->origin));
+    // c->buffer = (double *) calloc ( c->capacity, sizeof(double) );
 
-    memcpy((c->buffer)+(c->origin), (a->buffer)+(a->origin), DynamicArray_size(a)*sizeof(double));
-    memcpy((c->buffer)+(a->end), (b->buffer)+(b->origin), DynamicArray_size(b)*sizeof(double));
-    DynamicArray_track( c );
+    // memcpy((c->buffer)+(c->origin), (a->buffer)+(a->origin), DynamicArray_size(a)*sizeof(double));
+    // memcpy((c->buffer)+(a->end), (b->buffer)+(b->origin), DynamicArray_size(b)*sizeof(double));
+    // DynamicArray_track( c );
+    // return c;
+    DynamicArray *c = DynamicArray_copy(a);
+    int size_c = DynamicArray_size(c);
+    int size_b = DynamicArray_size(b);
+    for (int i = size_c; i < size_b; i++ ) {
+        for (int j = 0; j < size_b; j++) {
+            DynamicArray_set( c, i, c->buffer[j]);
+        }
+    }
     return c;
 }
 
