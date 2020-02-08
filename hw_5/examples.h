@@ -15,3 +15,8 @@ void sort_by_magnitude( vector<double> &a );
 Eratosthenes method*/
 vector<int> primes(int n);
 
+/* takes a list nums of integers and returns all pairs of numbers that are 
+consecutive in the list and differ by two*/
+vector<tuple<int,int>> twins(vector<int> nums);
+
+
