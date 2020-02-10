@@ -17,8 +17,7 @@ using namespace std;
 class DB {
 
   public:
-
-    
+   
     typedef tuple<int,string,double,double> Row;
 
     DB();
@@ -26,6 +25,13 @@ class DB {
     DB &drop(int);
     Row find(int) const;
     vector<Row> where(function<bool(const Row)> f) const;
+
+    Row find_by_name(const string) const;
+    DB &create_test_data(int n);
+    int size() const;
+    double accumulate(function<double(const Row)> f) const;
+    double average_mass() const;
+    double average_distance() const;
 
   private:
 
