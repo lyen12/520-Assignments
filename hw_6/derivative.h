@@ -19,5 +19,6 @@ class Derivative : public Process {
 		double derivative;
 		double previous_v;
 		double current_v;
+		int two_runs;
 
 };

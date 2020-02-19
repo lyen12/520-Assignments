@@ -46,7 +46,7 @@ namespace {
      .schedule(f, 5_ms)
      .add_channel(link)
      .init()
-     .run(100_ms);
+     .run(5_ms);
     f.value();
   }
 
@@ -76,7 +76,7 @@ namespace {
      .schedule(d, 5_ms)
      .add_channel(link)
      .init()
-     .run(100_ms);
+     .run(15_ms);
     d.value();
   }
 }
