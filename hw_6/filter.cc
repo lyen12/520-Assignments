@@ -17,7 +17,7 @@ void Filter::start() {
 void Filter::stop() {}
 void Filter::update() {
 	if (last_ten_link_numbers.size() == 10) {
-		last_ten_link_numbers.erase(last_ten_link_numbers.begin());
+		last_ten_link_numbers.erase(last_ten_link_numbers.begin());	
 	}
 	last_ten_link_numbers.push_back(channel("link").latest());
 }

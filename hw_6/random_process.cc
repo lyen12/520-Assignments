@@ -13,7 +13,7 @@ void RandomProcess::init() {}
 void RandomProcess::start() {}
 void RandomProcess::stop() {}
 
-double RandomProcess::randZeroToOne() {
+double RandomProcess::randZeroToOne() { //Gives a random number b/w 0 and 1
     return rand() / (RAND_MAX + 1.0);
 }
 

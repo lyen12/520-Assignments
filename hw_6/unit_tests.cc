@@ -3,6 +3,8 @@
 #include "random_process.h"
 #include "filter.h"
 #include "test_process.h"
+#include "integrator.h"
+#include "derivative.h"
 #include "elma/elma.h"
 #include <iostream>
 #include <vector>
@@ -35,12 +37,12 @@ namespace {
   TEST(Process, random_process) {
     elma::Manager m;
 
-    //RandomProcess r("random numbers");
-    TestProcess t("test numbers");
+    RandomProcess r("random numbers");
+    //TestProcess t("test numbers");
     Filter f("filter");
     elma::Channel link("link");
 
-    m.schedule(t, 5_ms)
+    m.schedule(r, 5_ms)
      .schedule(f, 5_ms)
      .add_channel(link)
      .init()
@@ -48,5 +50,34 @@ namespace {
     f.value();
   }
 
+  TEST(Process, integration) {
+    elma::Manager m;
+
+    TestProcess c("constant number");
+    Integrator i("intgerals");
+    elma::Channel link("link");
+
+    m.schedule(c, 5_ms)
+     .schedule(i, 5_ms)
+     .add_channel(link)
+     .init()
+     .run(100_ms);
+    i.value();
+  }
+
+  TEST(Process, derivative) {
+    elma::Manager m;
+
+    TestProcess c("constant number");
+    Derivative d("derivatives");
+    elma::Channel link("link");
+
+    m.schedule(c, 5_ms)
+     .schedule(d, 5_ms)
+     .add_channel(link)
+     .init()
+     .run(100_ms);
+    d.value();
+  }
 }
 
