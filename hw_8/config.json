@@ -8,7 +8,7 @@
         "definition": "defs/leader.json",
         "style": { "fill": "yellow", "stroke": "black" },
         "position": {
-            "x": 0, 
+            "x": 50, 
             "y": 0, 
             "theta": 0
                     }
@@ -17,7 +17,7 @@
         "definition": "defs/follower.json",
         "style": { "fill": "gray", "stroke": "black" },
         "position": {
-        "x": 50, 
+        "x": 0, 
         "y": 0, 
         "theta": 0
                     }
