@@ -33,6 +33,8 @@ namespace {
         EXPECT_EQ(b.get(2), 8);
         std::cout << "b is " << b << "\n";
 
+        TypedArray<int> c;
+        c.push_front(2);
     }
 
     TEST(TypedArray, Error) {

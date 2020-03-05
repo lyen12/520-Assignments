@@ -25,9 +25,12 @@ class Stopwatch : public Process {
 
 	private:
 		high_resolution_clock::time_point t_start, t_stop;
+		bool running;
 		duration<double> time_elapsed;
+		typedef duration<double,std::ratio<1,1000000000>> nanoseconds;
 		typedef duration<double,std::ratio<1,1000>> milliseconds;
 		typedef duration<double,std::ratio<1,1>> seconds;
 		typedef duration<double,std::ratio<60,1>> minutes;
+		duration<double> current_time();
 
 };

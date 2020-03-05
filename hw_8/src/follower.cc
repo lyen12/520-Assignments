@@ -4,25 +4,24 @@
 using namespace enviro;
 using namespace std;
 
-FollowerController::FollowerController() : StateMachine(), AgentInterface() {
-        // set_initial(following_cheese);
-        // add_transition("lost", following_cheese, scan_left);
-        // add_transition("found", scan_left, following_cheese);
-        // add_transition("lost", scan_left, scan_right);
-        // add_transition("found", scan_right, following_cheese);
-}
+FollowerController::FollowerController() : StateMachine(), AgentInterface() {}
 
-void FollowerController::init() {
-
-}
+void FollowerController::init() {}
 void FollowerController::start() {}
 void FollowerController::update() {
+	/*The mouse will watch for the cheese_change event and move towards the cheese*/
+	watch("cheese_change", [this](Event e) {
+	    goal_x = e.value()["x"];
+	    goal_y = e.value()["y"];
+	});
 
-watch("cheese_change", [this](Event e) {
-    goal_x = e.value()["x"];
-    goal_y = e.value()["y"];
-});
-move_toward(goal_x, goal_y);
+	if ( sensor_value(0) < 30 ) {
+    	track_velocity(0,0.2);
+	} else {  
+	move_toward(goal_x, goal_y);
+	}
+
+
 
 }
 void FollowerController::stop() {}

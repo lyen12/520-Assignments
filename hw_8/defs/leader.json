@@ -27,7 +27,13 @@
       "linear": 40,
       "rotational": 600
     },
-    "sensors": [],
+    "sensors": [
+        { 
+            "type": "range",
+            "location": { "x": 16, "y": 0 },
+            "direction": 0
+        }  
+    ],
     "mass": 1,    
     "controller": "lib/leader.so"
 }

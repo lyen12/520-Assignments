@@ -31,5 +31,7 @@ double Filter::value() {
 	cout << "\n";
 	average = total/last_ten_link_numbers.size();
 	cout << "The average of link is " << average << "\n";
+
+	if ( last_ten_link_numbers.empty() == true ) { return 0; }
 	return average;
 }
