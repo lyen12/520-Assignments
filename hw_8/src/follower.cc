@@ -16,10 +16,15 @@ void FollowerController::update() {
 	});
 
 	if ( sensor_value(0) < 30 ) {
-    	track_velocity(0,0.2);
+    	track_velocity(0,0);
 	} else {  
 	move_toward(goal_x, goal_y);
 	}
+
+	emit(Event("mouse1_change", { 
+	    { "mx", position().x }, 
+	    { "my", position().y } 
+	}));
 
 
 

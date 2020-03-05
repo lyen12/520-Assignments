@@ -21,6 +21,15 @@
         "y": 0, 
         "theta": 0
                     }
+        },    
+        {
+        "definition": "defs/follower_2.json",
+        "style": { "fill": "gray", "stroke": "black" },
+        "position": {
+        "x": -50, 
+        "y": 0, 
+        "theta": 0
+                    }
         }    
     ],
 

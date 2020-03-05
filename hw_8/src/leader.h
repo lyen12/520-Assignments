@@ -5,14 +5,37 @@
 
 using namespace enviro;
 
-class LeaderController : public Process, public AgentInterface {
+class Rotating : public State, public AgentInterface {
+    public:
+    Rotating();
+    void entry(const Event& e);
+    void during();
+    void exit(const Event& e);   
+
+    private:
+    double init_angle;
+    double stop_angle;
+    double diff_angle;
+};
+
+class MovingForward : public State, public AgentInterface {
+    public:
+    MovingForward();
+    void entry(const Event& e);
+    void during();
+    void exit(const Event& e);
+    
+};
+
+class LeaderController : public StateMachine, public AgentInterface {
 
     public:
     LeaderController();
-    void init();
-    void start();
     void update();
-    void stop();
+
+    private:
+    MovingForward moving_forward;
+    Rotating rotate;  
 
 };
 
@@ -24,6 +47,7 @@ class Leader : public Agent {
     private:
     LeaderController c;
 };
+
 
 DECLARE_INTERFACE(Leader)
 

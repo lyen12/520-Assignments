@@ -1,0 +1,31 @@
+{
+    "name": "Follower_2",
+    "type": "dynamic",
+    "description": "Second mouse",
+    "shape": [
+        { "x": -25, "y": 0 },
+        { "x": -10, "y": 1 },
+        { "x": -8, "y": 10 },
+        { "x": 8, "y": 3 },
+        { "x": 10, "y": 7 },
+        { "x": 15, "y": 0 },
+        { "x": 10, "y": -7 },
+        { "x": 8, "y": -3 },
+        { "x": -8, "y": -10 },
+        { "x": -10, "y": -1 }
+    ],
+    "friction": {
+      "collision": 5,
+      "linear": 40,
+      "rotational": 600
+    },
+    "sensors": [
+        { 
+        "type": "range",
+        "location": { "x": 16, "y": 0 },
+        "direction": 0
+        }
+    ],
+    "mass": 1,    
+    "controller": "lib/follower_2.so"
+}
